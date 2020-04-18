@@ -1,40 +1,52 @@
 import React, {useState} from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-//import CSPButton from './components/CSPButton.tsx';
-import * as Font from 'expo-font';
-import { AppLoading } from 'expo';
+import { Text, View, TextInput, Alert } from 'react-native';
+import CSPButton from '../components/CSPButton.tsx';
+import CSPView from '../components/CSPView.tsx';
+import { CSPStyles } from '../CSPStyles.tsx'
+import {
+  NavigationScreenComponent,
+  NavigationScreenProps,
+  NavigationStackScreenOptions
+} from "react-navigation";
+import AsyncStorage from '@react-native-community/async-storage';
 
 export default function StartParty({navigation}) {
+  //  var date = new Date().getDate();
+  //  var hours = new Date().getHours();
+  //  const parties = firestore().collection('parties');
+  async function createParty() {
+    const curPin = Math.floor(Math.random() * 1000000); //Fix this before production, allows for possible duplicates
+  //    await parties.add({
+  //      pin: curPin,
+  //      title: partyName,
+  //      date: date,
+  //      hours: hours
+  //    });
+    try {
+      console.log(partyName);
+      AsyncStorage.setItem('partyPin', curPin).then(() => {
+        navigation.navigate('Playlist');
+      });
+    } catch (error) {
+      alert("There was a problem saving your party.");
+    }
+  }
+  var curParty;
+  AsyncStorage.getItem('partyPin').then(values => {
+    curParty = values;
+  });
+  console.log(curParty);
+  if (curParty == null) {
+    return (
+      <CSPView>
+        <CSPButton title='Onward!' onPress={() => createParty()}/>
+      </CSPView>
+    );
+  }
   return (
-    <View style={styles.container}>
-      <Text style={styles.titleStyle}>Start Party page</Text>
-      <View style={styles.bottom}>
-        <Text style={styles.textStyle}>Created by Caitlin Tibbetts (2020)</Text>
-      </View>
-    </View>
+    <CSPView>
+      <CSPButton title={ 'Continue with ' + partyPin } onPress={ () => navigation.navigate('Playlist') }/>
+      <CSPButton title='Onward!' onPress={() => createParty()}/>
+    </CSPView>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#6D326D',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  bottom: {
-    flex: 1,
-    position: 'absolute',
-    bottom: 0
-  },
-  textStyle: {
-    color: '#E5F4E3',
-    fontFamily: 'montserrat-regular',
-  },
-  titleStyle: {
-    fontSize: 40,
-    textAlign: 'center',
-    color: '#E5F4E3',
-    fontFamily: 'montserrat-regular',
-  }
-});

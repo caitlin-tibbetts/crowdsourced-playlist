@@ -4,6 +4,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import Home from "./screens/Home";
 import JoinParty from "./screens/JoinParty";
 import StartParty from "./screens/StartParty";
+import ViewPlaylist from "./screens/ViewPlaylist";
 import { AppLoading } from 'expo';
 import * as Font from 'expo-font';
 
@@ -25,6 +26,7 @@ export default function App() {
           <Stack.Screen name="Home" component={ Home } options={{ title: '' }}/>
           <Stack.Screen name="Start" component={ StartParty } options={{ title: 'Start a Party' }}/>
           <Stack.Screen name="Join" component={ JoinParty } options={{ title: 'Join a party' }}/>
+          <Stack.Screen name="Playlist" component={ ViewPlaylist } options={{ title: 'View the Playlist' }}/>
         </Stack.Navigator>
       </NavigationContainer>
     );

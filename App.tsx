@@ -21,7 +21,7 @@ export default function App() {
   const [fontsLoaded, setFontsLoaded] = useState(false);
   if(fontsLoaded){
     return (
-      <NavigationContainer>
+       <NavigationContainer>
         <Stack.Navigator initialRouteName='Home'>
           <Stack.Screen name="Home" component={ Home } options={{ title: '' }}/>
           <Stack.Screen name="Start" component={ StartParty } options={{ title: 'Start a Party' }}/>

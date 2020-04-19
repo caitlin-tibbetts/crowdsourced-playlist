@@ -7,9 +7,9 @@ import {
   NavigationStackScreenOptions
 } from "react-navigation";
 import { CSPStyles } from '../CSPStyles.tsx'
+import {AuthSession} from 'expo'
 
 export default function Home({navigation}) {
-
   return (
     <View style={CSPStyles.container}>
       <Text style={CSPStyles.titleStyle}>Crowdsourced Playlist</Text>

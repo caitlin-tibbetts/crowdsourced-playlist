@@ -33,8 +33,10 @@ const CSPStyles = StyleSheet.create({
   },
   textInputStyle: {
     width: 150,
-    height: 30,
+    height: 40,
     borderColor: '#E5F4E3',
+    color: '#E5F4E3',
+    padding: 10,
     borderWidth: 1,
     marginLeft: 10
   }

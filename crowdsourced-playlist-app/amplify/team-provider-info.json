@@ -1,0 +1,15 @@
+{
+    "cspenv": {
+        "awscloudformation": {
+            "AuthRoleName": "amplify-crowdsourcedplaylist-cspenv-214300-authRole",
+            "UnauthRoleArn": "arn:aws:iam::832234081452:role/amplify-crowdsourcedplaylist-cspenv-214300-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::832234081452:role/amplify-crowdsourcedplaylist-cspenv-214300-authRole",
+            "Region": "us-east-2",
+            "DeploymentBucketName": "amplify-crowdsourcedplaylist-cspenv-214300-deployment",
+            "UnauthRoleName": "amplify-crowdsourcedplaylist-cspenv-214300-unauthRole",
+            "StackName": "amplify-crowdsourcedplaylist-cspenv-214300",
+            "StackId": "arn:aws:cloudformation:us-east-2:832234081452:stack/amplify-crowdsourcedplaylist-cspenv-214300/7b434a70-8b55-11ea-be7f-0a0a04c5437c",
+            "AmplifyAppId": "d31vk3mj5gqffi"
+        }
+    }
+}

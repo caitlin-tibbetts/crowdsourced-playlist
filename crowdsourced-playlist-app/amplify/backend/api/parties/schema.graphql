@@ -1,0 +1,23 @@
+type Party @model @key(name: "byPin", fields: ["pin"], queryField: "partiesByPin") {
+  id: ID!
+  pin: Int!
+  name: String!
+  songs: [Song] @connection(keyName: "byParty", fields: ["id"])
+  attendees: [Attendee] @connection(keyName: "byParty", fields: ["id"])
+}
+
+type Song @model @key(name: "byParty", fields: ["partyID"]) {
+  id: ID!
+  title: String!
+  artist: String!
+  album: String!
+  partyID: ID!
+  party: Party @connection(fields: ["partyID"])
+}
+
+type Attendee @model @key(name: "byParty", fields: ["partyID"]) {
+  id: ID!
+  screenName: String!
+  partyID: ID!
+  party: Party @connection(fields: ["partyID"])
+}

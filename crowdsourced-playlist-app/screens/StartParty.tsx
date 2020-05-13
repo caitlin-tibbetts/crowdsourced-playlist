@@ -139,7 +139,7 @@ export default function StartParty({ navigation }) {
       await API.graphql(graphqlOperation(createParty, { input: party }))
       let res
       res = await API.graphql(graphqlOperation(partiesByPin, { pin: nextPin }))
-      return { pin: nextPin, name: name, partyID: res.data.partiesByPin.items[0].id }
+      return { pin: nextPin, name: name, partyID: res.data.partiesByPin.items[0].id, host: true }
     } catch (err) {
       console.log('error creating party: ', err)
     }

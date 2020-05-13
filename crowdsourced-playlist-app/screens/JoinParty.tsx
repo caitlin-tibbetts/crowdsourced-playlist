@@ -29,7 +29,7 @@ export default function JoinParty({ navigation }) {
       } else {
         const attendee = { screenName: username, partyID: res.data.partiesByPin.items[0].id }
         await API.graphql(graphqlOperation(createAttendee, { input: attendee }))
-        return { pin: code, name: res.data.partiesByPin.items[0].name, partyID: res.data.partiesByPin.items[0].id }
+        return { pin: code, name: res.data.partiesByPin.items[0].name, partyID: res.data.partiesByPin.items[0].id, host: false }
       }
     } catch (err) {
       console.log(err)

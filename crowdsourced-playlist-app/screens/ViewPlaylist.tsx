@@ -14,6 +14,7 @@ export default function ViewPlaylist({ route, navigation }) {
   const { pin } = route.params
   const { name } = route.params
   const { partyID } = route.params
+  const { host } = route.params
 
   function getFourDigitPin() {
     if(pin.toString().length() == 3) {

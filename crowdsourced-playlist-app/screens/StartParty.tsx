@@ -123,7 +123,7 @@ export default function StartParty({ navigation }) {
       let res;
       let nextPin;
       do {
-        nextPin = Math.floor(Math.random() * 10000) + 1  
+        nextPin = Math.floor(Math.random() * 9999) + 1  
         res = await API.graphql(graphqlOperation(partiesByPin, { pin: nextPin }))
       } while(res.data.partiesByPin.items.length != 0)
       return nextPin
@@ -137,7 +137,9 @@ export default function StartParty({ navigation }) {
       const nextPin = await getNextPin()
       const party = { pin:  nextPin, name: name }
       await API.graphql(graphqlOperation(createParty, { input: party }))
-      return nextPin
+      let res
+      res = await API.graphql(graphqlOperation(partiesByPin, { pin: nextPin }))
+      return { pin: nextPin, name: name, partyID: res.data.partiesByPin.items[0].id }
     } catch (err) {
       console.log('error creating party: ', err)
     }
@@ -150,7 +152,7 @@ export default function StartParty({ navigation }) {
         <Text style={CSPStyles.promptStyle}>Party name: </Text>
         <TextInput style={CSPStyles.textInputStyle} value={name} onChangeText={text => setName(text)}/>
       </View>
-      <CSPButton title='Onward!' onPress={() => startParty().then(curPin => navigation.navigate('Playlist', {pin: curPin}))} />
+      <CSPButton title='Onward!' onPress={() => startParty().then(curParty => navigation.navigate('Playlist', curParty))} />
     </CSPView>
   );
 }

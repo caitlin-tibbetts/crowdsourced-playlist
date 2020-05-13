@@ -29,13 +29,13 @@ export default function JoinParty({ navigation }) {
       } else {
         const attendee = { screenName: username, partyID: res.data.partiesByPin.items[0].id }
         await API.graphql(graphqlOperation(createAttendee, { input: attendee }))
-        return true
+        return { pin: code, name: res.data.partiesByPin.items[0].name, partyID: res.data.partiesByPin.items[0].id }
       }
     } catch (err) {
       console.log(err)
     }
   }
-  
+
   return (
     <View style={CSPStyles.container}>
       <Text style={CSPStyles.titleStyle}>Input the pin for your party</Text>
@@ -56,9 +56,9 @@ export default function JoinParty({ navigation }) {
         value={code}
         onTextChange={code => { setCode(code) }}
       />
-      <CSPButton title='Go!' onPress={() => joinParty().then(worked => {
-        if(worked){
-          navigation.navigate('Playlist', { pin: code })
+      <CSPButton title='Go!' onPress={() => joinParty().then(curParty => {
+        if (curParty) {
+          navigation.navigate('Playlist', curParty)
         }
       })} />
       <View style={CSPStyles.bottom}>

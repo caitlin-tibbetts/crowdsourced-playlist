@@ -17,6 +17,8 @@ export const createParty = /* GraphQL */ `
           title
           artist
           album
+          upvotes
+          downvotes
           partyID
         }
         nextToken
@@ -47,6 +49,8 @@ export const updateParty = /* GraphQL */ `
           title
           artist
           album
+          upvotes
+          downvotes
           partyID
         }
         nextToken
@@ -77,6 +81,8 @@ export const deleteParty = /* GraphQL */ `
           title
           artist
           album
+          upvotes
+          downvotes
           partyID
         }
         nextToken
@@ -102,6 +108,8 @@ export const createSong = /* GraphQL */ `
       title
       artist
       album
+      upvotes
+      downvotes
       partyID
       party {
         id
@@ -127,6 +135,8 @@ export const updateSong = /* GraphQL */ `
       title
       artist
       album
+      upvotes
+      downvotes
       partyID
       party {
         id
@@ -152,6 +162,8 @@ export const deleteSong = /* GraphQL */ `
       title
       artist
       album
+      upvotes
+      downvotes
       partyID
       party {
         id

@@ -11,6 +11,8 @@ type Song @model @key(name: "byParty", fields: ["partyID"]) {
   title: String!
   artist: String!
   album: String!
+  upvotes: Int
+  downvotes: Int
   partyID: ID!
   party: Party @connection(fields: ["partyID"])
 }

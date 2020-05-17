@@ -14,6 +14,8 @@ export const getParty = /* GraphQL */ `
           title
           artist
           album
+          upvotes
+          downvotes
           partyID
         }
         nextToken
@@ -58,6 +60,8 @@ export const getSong = /* GraphQL */ `
       title
       artist
       album
+      upvotes
+      downvotes
       partyID
       party {
         id
@@ -85,6 +89,8 @@ export const listSongs = /* GraphQL */ `
         title
         artist
         album
+        upvotes
+        downvotes
         partyID
         party {
           id

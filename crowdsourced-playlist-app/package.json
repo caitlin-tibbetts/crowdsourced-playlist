@@ -33,6 +33,7 @@
     "react-native-screens": "2.0.0-alpha.12",
     "react-native-smooth-pincode-input": "^1.0.9",
     "react-native-spotify": "^2.0.3",
+    "react-native-vector-icons": "^6.6.0",
     "react-native-web": "~0.11.7",
     "react-navigation": "^4.3.7",
     "rn-spotify-sdk": "^1.2.13"

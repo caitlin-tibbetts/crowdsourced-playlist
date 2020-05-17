@@ -30,7 +30,9 @@ const getAuthorizationCode = async () => {
       encodeURIComponent(REDIRECT_URL),
   }).then(res => {
     console.log(res)
-    return res.params.code
+    if(res.params){
+      return res.params.code
+    } else return 0
   }).catch(err => {
     console.error(err)
   });

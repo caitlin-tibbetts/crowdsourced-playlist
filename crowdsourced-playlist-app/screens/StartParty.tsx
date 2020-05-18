@@ -141,7 +141,11 @@ export default function StartParty({ navigation }) {
       await API.graphql(graphqlOperation(createParty, { input: party }))
       let res
       res = await API.graphql(graphqlOperation(partiesByPin, { pin: nextPin }))
-      return { pin: nextPin, name: name, partyID: res.data.partiesByPin.items[0].id, host: true }
+      let accessToken
+      AsyncStorage.getItem('accessToken').then(nextAccessToken => {
+        accessToken = nextAccessToken
+      })
+      return { pin: nextPin, name: name, partyID: res.data.partiesByPin.items[0].id, host: true, accessToken: accessToken }
     } catch (err) {
       console.log('error creating party: ', err)
     }
@@ -154,7 +158,7 @@ export default function StartParty({ navigation }) {
         <Text style={CSPStyles.promptStyle}>Party name: </Text>
         <TextInput style={CSPStyles.textInputStyle} value={name} onChangeText={text => setName(text)}/>
       </View>
-      <CSPButton title='Onward!' onPress={() => startParty().then(curParty => navigation.navigate('Playlist', curParty))} />
+      <CSPButton title='Onward!' disabled={!accessTokenAvailable} onPress={() => startParty().then(curParty => navigation.navigate('Playlist', curParty))} />
     </CSPView>
   );
 }

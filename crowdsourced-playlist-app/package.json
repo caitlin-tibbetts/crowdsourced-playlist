@@ -37,7 +37,8 @@
     "react-native-vector-icons": "^6.6.0",
     "react-native-web": "~0.11.7",
     "react-navigation": "^4.3.7",
-    "rn-spotify-sdk": "^1.2.13"
+    "rn-spotify-sdk": "^1.2.13",
+    "spotify-web-api-js": "^1.4.0"
   },
   "devDependencies": {
     "@babel/core": "^7.0.0",

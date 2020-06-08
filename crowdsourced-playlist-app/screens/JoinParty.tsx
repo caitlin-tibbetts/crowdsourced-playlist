@@ -29,7 +29,7 @@ export default function JoinParty({ navigation }) {
       } else {
         const attendee = { screenName: username, partyID: res.data.partiesByPin.items[0].id }
         await API.graphql(graphqlOperation(createAttendee, { input: attendee }))
-        return { pin: code, name: res.data.partiesByPin.items[0].name, partyID: res.data.partiesByPin.items[0].id, host: false }
+        return { pin: code, name: res.data.partiesByPin.items[0].name, partyID: res.data.partiesByPin.items[0].id, isHost: false }
       }
     } catch (err) {
       console.log(err)
@@ -56,7 +56,7 @@ export default function JoinParty({ navigation }) {
         value={code}
         onTextChange={code => { setCode(code) }}
       />
-      <CSPButton title='Go!' onPress={() => joinParty().then(curParty => {
+      <CSPButton title='Go!' disabled={false} onPress={() => joinParty().then(curParty => {
         if (curParty) {
           navigation.navigate('Playlist', curParty)
         }

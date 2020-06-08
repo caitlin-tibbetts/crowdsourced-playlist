@@ -1,32 +1,29 @@
-import React, { useState, useEffect } from 'react';
-import { Text, FlatList, View, Button } from 'react-native';
-import CSPView from '../components/CSPView';
+import React, { useState, useEffect } from 'react'
+import { Text, FlatList, View, TextInput, AsyncStorage } from 'react-native'
+import axios from 'axios';
+import CSPView from '../components/CSPView'
 import { CSPStyles } from '../CSPStyles'
 
 
 import { API, graphqlOperation } from 'aws-amplify'
-import { listSongs, getParty } from '../src/graphql/queries'
-import CSPPlaylistItem from '../components/CSPPlaylistItem';
+import { getParty, getSong } from '../src/graphql/queries'
+import CSPPlaylistItem from '../components/CSPPlaylistItem'
+import { createSong, updateSong } from '../src/graphql/mutations'
+import { onCreateSong, onUpdateSong, onDeleteSong } from '../src/graphql/subscriptions'
+import CSPSmallButton from '../components/CSPSmallButton'
 
-import { AppLoading } from 'expo';
-import { createSong, updateSong } from '../src/graphql/mutations';
-import { onCreateSong, onUpdateSong, onDeleteSong } from '../src/graphql/subscriptions';
-import { TextInput } from 'react-native-gesture-handler';
-import CSPSmallButton from '../components/CSPSmallButton';
-
-import SpotifyWebAPI from 'spotify-web-api-js';
+import SpotifyWebAPI from 'spotify-web-api-js'
+import CSPNowPlaying from '../components/CSPNowPlaying'
 
 export default function ViewPlaylist({ route, navigation }) {
   const { pin } = route.params
   const { name } = route.params
   const { partyID } = route.params
-  const { host } = route.params
-  const { accessToken } = route.params
+  const { isHost } = route.params
 
-  const [player, setPlayer] = useState()
-  const [playlist, setPlaylist] = useState([]);
-  const [refreshing, setRefreshing] = useState(false);
-  const [addedSong, setAddedSong] = useState('');
+  const [playlist, setPlaylist] = useState([])
+  const [refreshing, setRefreshing] = useState(false)
+  const [addedSong, setAddedSong] = useState('')
 
   function getFourDigitPin() {
     if (pin.toString().length == 4) {
@@ -45,54 +42,75 @@ export default function ViewPlaylist({ route, navigation }) {
   let newPin;
   newPin = getFourDigitPin()
 
-  async function getPlayer() {
-    var sp = new SpotifyWebAPI()
-    await sp.setAccessToken(accessToken)
-    return sp
-  }
+  var sp = new SpotifyWebAPI()
+  var accessToken
+  AsyncStorage.getItem('accessToken').then(nextAccessToken => {
+    accessToken = nextAccessToken
+  })
 
   async function getPlaylist() {
-    const party = await API.graphql(graphqlOperation(getParty, { id: partyID }))
+    const party: any = await API.graphql(graphqlOperation(getParty, { id: partyID }))
     return party.data.getParty.songs.items
   }
 
-  const createSongSubscription = API.graphql(graphqlOperation(onCreateSong)).subscribe({
-    next: newSong => {
-      if (newSong.value.data.onCreateSong.partyID == partyID) {
-        setPlaylist([...playlist, newSong.value.data.onCreateSong])
-      }
-    },
-    error: console.warn()
-  })
-
-
-  const updateSongSubscription = API.graphql(graphqlOperation(onUpdateSong)).subscribe({
-    next: updatedSong => {
-      playlist.forEach((value, index) => {
-        if (value.id == updatedSong.value.data.onUpdateSong.id) {
-          playlist[index] = updatedSong.value.data.onUpdateSong
-        }
-      })
-    },
-    error: console.warn()
-  })
-
-  const deleteSongSubscription = API.graphql(graphqlOperation(onDeleteSong)).subscribe({
-    next: deletedSong => {
-      playlist.forEach((value, index) => {
-        if (value.id == deletedSong.value.data.onDeleteSong.id) {
-          playlist.splice(index, 1)
-        }
-      })
+  async function changeSong(songID, newSong) {
+    const song = {
+      id: songID,
+      uri: newSong.tracks.items[0].uri,
+      title: newSong.tracks.items[0].name,
+      artist: newSong.tracks.items[0].artists[0].name,
+      album: newSong.tracks.items[0].album.name
     }
-  })
+    await API.graphql(graphqlOperation(updateSong, { input: song }))
+  }
 
   useEffect(() => {
+    const createSongSubscription = (API.graphql(graphqlOperation(onCreateSong)) as any).subscribe({
+      next: newSong => {
+        if (newSong.value.data.onCreateSong.partyID == partyID) {
+          if (isHost) {
+            sp.setAccessToken(accessToken)
+            sp.searchTracks(newSong.value.data.onCreateSong.title, { limit: 1 }).then(songs => {
+              changeSong(newSong.value.data.onCreateSong.id, songs).then().catch(err => console.log(err))
+            }).catch(err => {
+              console.log(err)
+            })
+          }
+        }
+      },
+      error: console.warn()
+    })
+    const updateSongSubscription = (API.graphql(graphqlOperation(onUpdateSong)) as any).subscribe({
+      next: updatedSong => {
+        if (updatedSong.value.data.onUpdateSong.partyID == partyID) {
+          setPlaylist([...playlist, updatedSong.value.data.onUpdateSong])
+          if(isHost) {
+            sp.setAccessToken(accessToken)
+            fetch(`https://api.spotify.com/v1/me/player/queue?uri=${updatedSong.value.data.onUpdateSong.uri}&device_id=68784c081e2bff799b22885e10e760b018431b55`, {
+              method: 'POST',
+              headers: {
+                Authorization: `Bearer ${accessToken}`,
+                'Content-Type': 'application/x-www-form-urlencoded',
+              },
+            }).then(res => {
+              console.log(res.status)
+            })
+          }
+        }
+      },
+      error: console.warn()
+    })
+    const deleteSongSubscription = (API.graphql(graphqlOperation(onDeleteSong)) as any).subscribe({
+      next: deletedSong => {
+        playlist.forEach((value, index) => {
+          if (value.id == deletedSong.value.data.onDeleteSong.id) {
+            playlist.splice(index, 1)
+          }
+        })
+      }
+    })
     getPlaylist().then(songs => {
       setPlaylist(songs)
-    })
-    getPlayer().then(newPlayer => {
-      setPlayer(newPlayer)
     })
     return () => {
       createSongSubscription.unsubscribe()
@@ -102,15 +120,33 @@ export default function ViewPlaylist({ route, navigation }) {
   }, [])
 
   async function addSong() {
-
-    const song = { title: addedSong, artist: "me", album: "someAlbum", partyID: partyID }
+    const song = { title: addedSong, artist: '', album: '', partyID: partyID }
     await API.graphql(graphqlOperation(createSong, { input: song }))
+  }
+
+  async function playSpotify() {
+    await sp.setAccessToken(accessToken)
+    await sp.play()
+  }
+
+  async function pauseSpotify() {
+    await sp.setAccessToken(accessToken)
+    await sp.pause()
   }
 
   return (
     <CSPView>
       <Text style={CSPStyles.titleStyle}>{newPin}</Text>
       <Text style={CSPStyles.textStyle}>{name}</Text>
+      <CSPNowPlaying
+        isHost={isHost}
+        play={() => {
+          playSpotify()
+        }}
+        pause={() => {
+          pauseSpotify()
+        }}
+      />
       <FlatList
         onRefresh={() => {
           setRefreshing(true)

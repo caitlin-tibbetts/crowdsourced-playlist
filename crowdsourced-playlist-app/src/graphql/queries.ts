@@ -8,9 +8,25 @@ export const getParty = /* GraphQL */ `
       id
       pin
       name
+      nowPlaying {
+        id
+        uri
+        title
+        artist
+        album
+        upvotes
+        downvotes
+        partyID
+        party {
+          id
+          pin
+          name
+        }
+      }
       songs {
         items {
           id
+          uri
           title
           artist
           album
@@ -42,6 +58,16 @@ export const listPartys = /* GraphQL */ `
         id
         pin
         name
+        nowPlaying {
+          id
+          uri
+          title
+          artist
+          album
+          upvotes
+          downvotes
+          partyID
+        }
         songs {
           nextToken
         }
@@ -57,6 +83,7 @@ export const getSong = /* GraphQL */ `
   query GetSong($id: ID!) {
     getSong(id: $id) {
       id
+      uri
       title
       artist
       album
@@ -67,6 +94,16 @@ export const getSong = /* GraphQL */ `
         id
         pin
         name
+        nowPlaying {
+          id
+          uri
+          title
+          artist
+          album
+          upvotes
+          downvotes
+          partyID
+        }
         songs {
           nextToken
         }
@@ -86,6 +123,7 @@ export const listSongs = /* GraphQL */ `
     listSongs(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
+        uri
         title
         artist
         album
@@ -112,6 +150,16 @@ export const getAttendee = /* GraphQL */ `
         id
         pin
         name
+        nowPlaying {
+          id
+          uri
+          title
+          artist
+          album
+          upvotes
+          downvotes
+          partyID
+        }
         songs {
           nextToken
         }
@@ -162,6 +210,16 @@ export const partiesByPin = /* GraphQL */ `
         id
         pin
         name
+        nowPlaying {
+          id
+          uri
+          title
+          artist
+          album
+          upvotes
+          downvotes
+          partyID
+        }
         songs {
           nextToken
         }

@@ -8,9 +8,25 @@ export const onCreateParty = /* GraphQL */ `
       id
       pin
       name
+      nowPlaying {
+        id
+        uri
+        title
+        artist
+        album
+        upvotes
+        downvotes
+        partyID
+        party {
+          id
+          pin
+          name
+        }
+      }
       songs {
         items {
           id
+          uri
           title
           artist
           album
@@ -37,9 +53,25 @@ export const onUpdateParty = /* GraphQL */ `
       id
       pin
       name
+      nowPlaying {
+        id
+        uri
+        title
+        artist
+        album
+        upvotes
+        downvotes
+        partyID
+        party {
+          id
+          pin
+          name
+        }
+      }
       songs {
         items {
           id
+          uri
           title
           artist
           album
@@ -66,9 +98,25 @@ export const onDeleteParty = /* GraphQL */ `
       id
       pin
       name
+      nowPlaying {
+        id
+        uri
+        title
+        artist
+        album
+        upvotes
+        downvotes
+        partyID
+        party {
+          id
+          pin
+          name
+        }
+      }
       songs {
         items {
           id
+          uri
           title
           artist
           album
@@ -93,6 +141,7 @@ export const onCreateSong = /* GraphQL */ `
   subscription OnCreateSong {
     onCreateSong {
       id
+      uri
       title
       artist
       album
@@ -103,6 +152,16 @@ export const onCreateSong = /* GraphQL */ `
         id
         pin
         name
+        nowPlaying {
+          id
+          uri
+          title
+          artist
+          album
+          upvotes
+          downvotes
+          partyID
+        }
         songs {
           nextToken
         }
@@ -117,6 +176,7 @@ export const onUpdateSong = /* GraphQL */ `
   subscription OnUpdateSong {
     onUpdateSong {
       id
+      uri
       title
       artist
       album
@@ -127,6 +187,16 @@ export const onUpdateSong = /* GraphQL */ `
         id
         pin
         name
+        nowPlaying {
+          id
+          uri
+          title
+          artist
+          album
+          upvotes
+          downvotes
+          partyID
+        }
         songs {
           nextToken
         }
@@ -141,6 +211,7 @@ export const onDeleteSong = /* GraphQL */ `
   subscription OnDeleteSong {
     onDeleteSong {
       id
+      uri
       title
       artist
       album
@@ -151,6 +222,16 @@ export const onDeleteSong = /* GraphQL */ `
         id
         pin
         name
+        nowPlaying {
+          id
+          uri
+          title
+          artist
+          album
+          upvotes
+          downvotes
+          partyID
+        }
         songs {
           nextToken
         }
@@ -171,6 +252,16 @@ export const onCreateAttendee = /* GraphQL */ `
         id
         pin
         name
+        nowPlaying {
+          id
+          uri
+          title
+          artist
+          album
+          upvotes
+          downvotes
+          partyID
+        }
         songs {
           nextToken
         }
@@ -191,6 +282,16 @@ export const onUpdateAttendee = /* GraphQL */ `
         id
         pin
         name
+        nowPlaying {
+          id
+          uri
+          title
+          artist
+          album
+          upvotes
+          downvotes
+          partyID
+        }
         songs {
           nextToken
         }
@@ -211,6 +312,16 @@ export const onDeleteAttendee = /* GraphQL */ `
         id
         pin
         name
+        nowPlaying {
+          id
+          uri
+          title
+          artist
+          album
+          upvotes
+          downvotes
+          partyID
+        }
         songs {
           nextToken
         }

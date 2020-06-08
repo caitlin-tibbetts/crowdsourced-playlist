@@ -1,9 +1,9 @@
 import React from 'react';
 import { StyleSheet, TouchableOpacity, Text, View } from 'react-native';
 
-export default function CSPButton({ title, onPress }) {
+export default function CSPButton({ title, onPress, disabled=false }) {
   return (
-    <TouchableOpacity onPress = {onPress}>
+    <TouchableOpacity onPress = {onPress} disabled={disabled ? true : false}>
       <View style={styles.button}>
         <Text style={styles.buttonText}>{ title }</Text>
       </View>

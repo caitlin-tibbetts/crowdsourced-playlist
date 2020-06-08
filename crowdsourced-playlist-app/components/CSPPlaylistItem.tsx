@@ -49,7 +49,7 @@ export default function CSPPlaylistItem({ songID, title, artist, initialUpvotes,
                 setDownvoteDisabled(true)
             }} 
             disabled={downvoteDisabled}
-            style={styles.downVoteButton}>
+            style={styles.downvoteButton}>
                 <Icon name="thumbs-down" size={30} />
                 <Text>{downvotes}</Text>
             </TouchableOpacity>
@@ -73,7 +73,7 @@ const styles = StyleSheet.create({
         color: '#E5F4E3',
         marginEnd: 10
     },
-    downVoteButton: {
+    downvoteButton: {
         marginEnd: 10,
         color: '#E5F4E3',
     }

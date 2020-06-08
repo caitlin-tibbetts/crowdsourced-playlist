@@ -11,9 +11,25 @@ export const createParty = /* GraphQL */ `
       id
       pin
       name
+      nowPlaying {
+        id
+        uri
+        title
+        artist
+        album
+        upvotes
+        downvotes
+        partyID
+        party {
+          id
+          pin
+          name
+        }
+      }
       songs {
         items {
           id
+          uri
           title
           artist
           album
@@ -43,9 +59,25 @@ export const updateParty = /* GraphQL */ `
       id
       pin
       name
+      nowPlaying {
+        id
+        uri
+        title
+        artist
+        album
+        upvotes
+        downvotes
+        partyID
+        party {
+          id
+          pin
+          name
+        }
+      }
       songs {
         items {
           id
+          uri
           title
           artist
           album
@@ -75,9 +107,25 @@ export const deleteParty = /* GraphQL */ `
       id
       pin
       name
+      nowPlaying {
+        id
+        uri
+        title
+        artist
+        album
+        upvotes
+        downvotes
+        partyID
+        party {
+          id
+          pin
+          name
+        }
+      }
       songs {
         items {
           id
+          uri
           title
           artist
           album
@@ -105,6 +153,7 @@ export const createSong = /* GraphQL */ `
   ) {
     createSong(input: $input, condition: $condition) {
       id
+      uri
       title
       artist
       album
@@ -115,6 +164,16 @@ export const createSong = /* GraphQL */ `
         id
         pin
         name
+        nowPlaying {
+          id
+          uri
+          title
+          artist
+          album
+          upvotes
+          downvotes
+          partyID
+        }
         songs {
           nextToken
         }
@@ -132,6 +191,7 @@ export const updateSong = /* GraphQL */ `
   ) {
     updateSong(input: $input, condition: $condition) {
       id
+      uri
       title
       artist
       album
@@ -142,6 +202,16 @@ export const updateSong = /* GraphQL */ `
         id
         pin
         name
+        nowPlaying {
+          id
+          uri
+          title
+          artist
+          album
+          upvotes
+          downvotes
+          partyID
+        }
         songs {
           nextToken
         }
@@ -159,6 +229,7 @@ export const deleteSong = /* GraphQL */ `
   ) {
     deleteSong(input: $input, condition: $condition) {
       id
+      uri
       title
       artist
       album
@@ -169,6 +240,16 @@ export const deleteSong = /* GraphQL */ `
         id
         pin
         name
+        nowPlaying {
+          id
+          uri
+          title
+          artist
+          album
+          upvotes
+          downvotes
+          partyID
+        }
         songs {
           nextToken
         }
@@ -192,6 +273,16 @@ export const createAttendee = /* GraphQL */ `
         id
         pin
         name
+        nowPlaying {
+          id
+          uri
+          title
+          artist
+          album
+          upvotes
+          downvotes
+          partyID
+        }
         songs {
           nextToken
         }
@@ -215,6 +306,16 @@ export const updateAttendee = /* GraphQL */ `
         id
         pin
         name
+        nowPlaying {
+          id
+          uri
+          title
+          artist
+          album
+          upvotes
+          downvotes
+          partyID
+        }
         songs {
           nextToken
         }
@@ -238,6 +339,16 @@ export const deleteAttendee = /* GraphQL */ `
         id
         pin
         name
+        nowPlaying {
+          id
+          uri
+          title
+          artist
+          album
+          upvotes
+          downvotes
+          partyID
+        }
         songs {
           nextToken
         }

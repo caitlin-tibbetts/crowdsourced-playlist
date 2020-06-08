@@ -12,6 +12,8 @@ import { API, graphqlOperation } from 'aws-amplify'
 import { createParty } from '../src/graphql/mutations'
 import { partiesByPin } from '../src/graphql/queries'
 
+import SpotifyWebAPI from 'spotify-web-api-js'
+
 import { CLIENT_ID, CLIENT_SECRET, REDIRECT_URL } from 'react-native-dotenv';
 
 const scopes = ['user-modify-playback-state', 'user-read-currently-playing', 'user-read-playback-state', 'user-library-modify',
@@ -29,9 +31,8 @@ const getAuthorizationCode = async () => {
       '&redirect_uri=' +
       encodeURIComponent(REDIRECT_URL),
   }).then(res => {
-    console.log(res)
-    if(res.params){
-      return res.params.code
+    if((res as any).params){
+      return (res as any).params.code
     } else return 0
   }).catch(err => {
     console.error(err)
@@ -110,7 +111,7 @@ export default function StartParty({ navigation }) {
   useEffect(() => {
     AsyncStorage.getItem('expirationTime').then(tokenExpirationTime => {
       if (!tokenExpirationTime || new Date().getTime() > parseInt(tokenExpirationTime)) {
-        refreshTokens().then()
+        refreshTokens()
         setAccessTokenAvailable(true)
       } else {
         setAccessTokenAvailable(true)
@@ -145,7 +146,7 @@ export default function StartParty({ navigation }) {
       AsyncStorage.getItem('accessToken').then(nextAccessToken => {
         accessToken = nextAccessToken
       })
-      return { pin: nextPin, name: name, partyID: res.data.partiesByPin.items[0].id, host: true, accessToken: accessToken }
+      return { pin: nextPin, name: name, partyID: res.data.partiesByPin.items[0].id, isHost: true, accessToken: accessToken }
     } catch (err) {
       console.log('error creating party: ', err)
     }
